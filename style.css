@@ -1,0 +1,12 @@
+svg{
+	border: 1px solid black;
+}
+.k9{
+	fill: yellow;
+}
+.k15{
+	fill: green;
+}
+circle:hover{
+	fill:red;
+}
