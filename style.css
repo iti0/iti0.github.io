@@ -2,10 +2,10 @@ svg{
 	border: 1px solid black;
 }
 .k9{
-	fill: yellow;
+	fill: green;
 }
 .k15{
-	fill: green;
+	fill: orange;
 }
 circle:hover{
 	fill:red;
