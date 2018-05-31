@@ -1,38 +1,74 @@
-m = [
-		setInfo("k15",12,29,5,"black",3),
-		setInfo("k15",11,28,5,"black",3),
-		setInfo("k15",12,28,5,"black",3),
-		setInfo("k15",13,27,5,"black",3),
-		setInfo("k15",13,25,5,"black",3),
-		setInfo("k15",13,26,5,"black",3),
-		setInfo("k9",12,26,5,"black",3),
-		setInfo("k9",13,28,5,"black",3),		
-		setInfo("k9",10,40,5,"black",3),		
-		setInfo("k9",50,50,5,"black",3)		]
-function setInfo(sclass, cx, cy, r, fill,xzoom){
-	cxz = cx*900/100
-	cyz = cy*900/100
+let DragManager = (function Dragable(){
+	let o;
+	let offset = {
+		x: 0,
+		y: 0
+	};
+	function mouse_move(e){
+		o.style.marginLeft = (parseInt(o.style.marginLeft) || 0) + e.clientX - offset.x +'px';
+		o.style.marginTop = (parseInt(o.style.marginTop) || 0) + e.clientY - offset.y +'px';
+		offset.x = e.clientX;
+		offset.y = e.clientY;
+	}
+	function mouse_up(e){
+		document.removeEventListener('mousemove', mouse_move);
+		document.removeEventListener('mouseup', mouse_up);
+	}
+	function make(element){
+		element.addEventListener('mousedown', e => {
+			o = e.target;
+			offset.x = e.clientX;
+			offset.y = e.clientY;
+			document.addEventListener('mousemove', mouse_move);
+			document.addEventListener('mouseup', mouse_up);
+		});
+	}
 	return {
-		"xclass":sclass,
-		"cx":cxz.toString(),
-		"cy":cyz.toString(),
-		"r":r.toString(),
-		"fill":fill,
-		"onclick":"alert('x="+cx.toString()+" y="+cy.toString()+"');"
+		'make': make
+	};
+})();
+
+let KartaManager = (function karta(){
+	let ctx;
+	let width;
+	let size;
+	function init(canvas){
+		ctx = canvas.getContext("2d");
+		width = canvas.width;
+		size = width/800;
 	}
-}
-function setCircle(options){
-	var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-	c.setAttribute("class", options.xclass)
-	c.setAttribute("cx", options.cx)
-	c.setAttribute("cy", options.cy)
-	c.setAttribute("r", options.r)
-	c.setAttribute("fill", options.fill)
-	c.setAttribute("onclick", options.onclick)
-	msvg.appendChild(c)
-}
-function main(){
-	for(var i=0; i<m.length;i++){
-		setCircle(m[i]);
+	function assist_grid(client_size){
+		ctx.strokeStyle = 'lightgrey';
+		ctx.beginPath()
+		for(let i=0; i<width/client_size+1; i++){
+			ctx.moveTo(0, client_size*i);
+			ctx.lineTo(width, client_size*i);
+		}
+		for(let j=0; j<width/client_size+1; j++){
+			ctx.moveTo(client_size*j, 0);
+			ctx.lineTo(client_size*j, width);
+		}	
+		ctx.stroke();
 	}
-}
+	function main_grid(){	
+		ctx.strokeStyle = 'black';
+		ctx.beginPath()
+		ctx.moveTo(width / 2, 0);
+		ctx.lineTo(width / 2, width);
+		ctx.moveTo(0, width / 2);
+		ctx.lineTo(width, width / 2);
+		ctx.stroke();
+	}
+	function rect_field(x, y, color){
+		ctx.fillStyle = color;
+		ctx.beginPath()
+		ctx.rect(x*size, y*size, size, size);
+		ctx.fill();
+	}
+	return {
+		'init': init,
+		'assist_grid': assist_grid,
+		'main_grid': main_grid,
+		'rect_field': rect_field
+	};
+})();
