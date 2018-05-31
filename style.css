@@ -1,12 +1,12 @@
-svg{
+#view {
+	overflow: hidden;
+	width: 800px;
+	height: 800px;
 	border: 1px solid black;
+	margin: 0 auto;
 }
-.k9{
-	fill: green;
-}
-.k15{
-	fill: orange;
-}
-circle:hover{
-	fill:red;
+#canvas1 {
+	margin-left: 0px;
+	margin-top: 0px;
+	background: beige;
 }
