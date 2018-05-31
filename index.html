@@ -1,49 +1,26 @@
+<!DOCTYPE html>
 <html>
-<head><title>SVG Test</title>
-	<style>
-		svg{
-			border: 1px solid black;
-		}
-		.k9{
-			fill: blue;
-		}
-		.k15{
-			fill: green;
-		}
-		.s{
-			fill: gray;
-
-		}
-		.k9:hover, .k15:hover{
-			fill:red;
-			stroke: black;
-			stroke-width: 1px;
-		}
-	</style>
+<head>
+	<meta charset="utf-8">
+	<title>map</title>
+	<link rel="stylesheet" type="text/css" href="./style.css">
+	<script type="text/javascript" src="./script.js"></script>
 </head>
 <body>
-	<svg version="1.1" baseProfile="full" width="1600" height="1600" xmlns="http://www.w3.org/2000/svg" id="msvg" preserveAspectRatio viewBox="700 700 200 200" >
-		<circle class="s" cx="800" cy="800" r="44"  />
-		<line x1="0" y1="800" x2="1600" y2="800" stroke-width="1" stroke="black"/>
-		<line x1="800" y1="0" x2="800" y2="1600" stroke-width="1" stroke="black"/>
-
-		<circle class="k9" cx="840" cy="756" r="2" title="x=22 y=0" onmouseover="gg(event, this)" />
-		<circle class="k9" cx="844" cy="760" r="2" title="x=12 y=28" onmouseover="gg(event, this)" />
-		<circle class="k15" cx="840" cy="760" r="2" title="x=11 y=28" onmouseover="gg(event, this)" />
-		<circle class="k15" cx="844" cy="800" r="2" title="x=11 y=28" onmouseover="gg(event, this)" />
-	</svg>
-	<div id="tooltip" style="visibility:hidden; position: absolute; left: 0px; top: 0px; background: aqua;">
-		<span id="tooltip_text"></span>
+	<div id="view">
+		<canvas id="canvas1" width="800" height="800"></canvas>
 	</div>
-	<script>
-
-		function gg(e, el){
-			console.log(el)
-			tooltip_text.textContent = el.getAttribute("title");
-			tooltip.style.visibility = '';
-			tooltip.style.left = e.clientX+2+'px';
-			tooltip.style.top = e.clientY+2+'px';
-		}
+	<script type="text/javascript">
+		DragManager.make(canvas1);
+		
+		KartaManager.init(canvas1);
+		KartaManager.assist_grid(400);
+		KartaManager.main_grid();
+		
+		
+		for(let i=0; i<800; i++){
+			KartaManager.rect_field(Math.round(Math.random()*801), Math.round(Math.random()*801), 'red');
+		}		
 	</script>
 </body>
 </html>
